@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-page-layout',
   standalone: true,
   imports: [
     RouterOutlet
   ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  templateUrl: './page-layout.component.html',
+  styleUrl: './page-layout.component.css'
 })
-export class AppComponent {
-  title = 'taskit';
+export class PageLayoutComponent {
+
 }
