@@ -1,1 +1,24 @@
-<p>header works!</p>
+<div class="h-16 border-b w-full flex items-center justify-between px-6 py-2">
+    <div class="flex items-center space-x-4">
+        <button class="menu-button h-11 w-11" (click)="navbarService.toggle()">
+            <fa-icon [icon]="faBars"></fa-icon>
+        </button>
+        <div class="font-bold">
+            TASKIT
+        </div>
+    </div>
+    <div class="flex items-center">
+        <div class="flex items-center space-x-4">
+            <div class="text-right">
+                <div>
+                    Example Name
+                </div>
+                <div class="text-xs text-gray-400">
+                    Developer
+                </div>
+            </div>
+            <img class="h-11 w-11 aspect-square rounded-full" src="https://i.ibb.co/8mMNjw4/profile-tmp.png"
+                alt="profile-tmp" border="0" />
+        </div>
+    </div>
+</div>

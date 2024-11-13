@@ -1,8 +1,9 @@
-<div class="page-container">
-    <div class="text-3xl font-bold underline">
-        page layout
-    </div>
-    <div>
-        <router-outlet />
+<div class="flex w-full h-[100vh]">
+    <app-navbar></app-navbar>
+    <div class="h-full w-full max-h-[100vh] overflow-y-auto">
+        <app-header></app-header>
+        <div class="p-6">
+            <router-outlet />
+        </div>
     </div>
 </div>

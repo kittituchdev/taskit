@@ -19,6 +19,7 @@ export const routes: Routes = [
         children: [
             // Define main application routes here
             { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard.component').then(c => c.DashboardComponent) },
+            { path: 'project', loadComponent: () => import('./features/project/project.component').then(c => c.ProjectComponent) },
             // Add other non-auth-related routes
         ]
     },
