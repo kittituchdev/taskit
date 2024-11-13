@@ -1,0 +1,25 @@
+.h-kanban {
+  /* 14rem from header + project head */
+  height: calc(100vh - 14rem);
+}
+
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    cursor: grab;
+    width: 100%;
+  }
+  
+  .scroll-container:active {
+    cursor: grabbing;
+  }
+  
+  .scroll-item {
+    display: inline-block;
+    min-width: 250px;
+    padding: 20px;
+    background-color: lightgray;
+    margin-right: 10px;
+    text-align: center;
+  }
