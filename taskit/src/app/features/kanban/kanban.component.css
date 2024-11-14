@@ -4,10 +4,14 @@
   min-height: calc(100vh - 11rem);
 }
 
+.h-lane {
+  height: calc(100% - 84px);
+}
+
 /* width */
 ::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
+  width: 8px;
+  height: 8px;
 }
 
 /* Track */
@@ -22,16 +26,17 @@
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-neutral-500;
+  @apply bg-neutral-500 cursor-pointer;
 }
 
 .main-board {
-  @apply w-full space-x-4 h-kanban flex flex-row overflow-hidden px-6 pt-6;
+  @apply w-full space-x-6 h-kanban flex flex-row overflow-y-hidden px-6 p-4;
 }
 
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
+  overflow: hidden; /* Prevents scrollbar from showing in most browsers */
 }
 
 .cdk-drag-placeholder {
@@ -39,13 +44,5 @@
 }
 
 .cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.example-box:last-child {
-  border: none;
-}
-
-.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

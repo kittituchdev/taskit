@@ -1,31 +1,38 @@
-<div cdkDropList cdkDropListOrientation="horizontal" class="main-board" (cdkDropListDropped)="dropLane($event)">
+<div cdkDropList cdkDropListOrientation="horizontal" class="main-board text-sm" (cdkDropListDropped)="dropLane($event)">
     @for (lane of lanes; track lane.laneId) {
-    <div class="min-w-72 md:min-w-80 md:w-80 space-y-4 h-full" cdkDrag>
-
-        <div class="w-full flex justify-between items-center px-2 h-8">
-            <div class="font-bold">
-                {{ lane.name }}
+    <div class="min-w-80 md:min-w-80 md:w-80 space-y-2 h-full" cdkDrag [cdkDragDisabled]="!isDraggable">
+        <div class="w-full flex justify-between items-center h-8 pr-1">
+            <div class="w-full flex items-center space-x-2 hover:cursor-pointer" cdkDragHandle>
+                <div [ngStyle]="{ color: lane.color }" class="text-xs">
+                    <fa-icon [icon]="faCircle"></fa-icon>
+                </div>
+                <div class="font-bold">
+                    {{ lane.name }}
+                </div>
             </div>
             <button class="w-8 aspect-square rounded-md hover:bg-neutral-200">
                 <fa-icon [icon]="faEllipsisVertical"></fa-icon>
             </button>
         </div>
 
-        <button class="bg-white text-blue-600 p-2 rounded-md border flex justify-center items-center min-h-12 w-full">
-            + Add New Task
-        </button>
+        <div class="pr-1">
+            <button
+                class="bg-white text-blue-600 p-2 rounded-md border flex justify-center items-center min-h-12 w-full">
+                + Add New Task
+            </button>
+        </div>
 
 
         <div cdkDropList [id]="lane.laneId" [cdkDropListData]="cards[lane.laneId]"
             [cdkDropListConnectedTo]="connectedLanes" (cdkDropListDropped)="dropCard($event)"
-            class="space-y-2 h-full overflow-y-auto pb-36">
+            class="space-y-2 h-lane overflow-auto pr-1">
 
             @for (card of cards[lane.laneId]; track card.cardId) {
 
 
             <!-- Actual Card -->
             <div class="bg-white px-4 pt-4 rounded-md border w-full space-y-2" cdkDrag>
-                <div class="flex w-full justify-between items-start space-x-2 h-8">
+                <div class="flex w-full justify-between items-center space-x-2 h-7">
                     <div class="font-bold whitespace-nowrap truncate">
                         {{ card.name }}
                     </div>
@@ -34,11 +41,13 @@
                     </button>
                 </div>
                 <div>
-                    <button class="text-sm rounded-full bg-orange-200 text-orange-600 px-4 py-2">
-                        UX Stages
+                    <button
+                        [ngStyle]="{ color: utilService.darkenColor(card.labelColor, 40), background: card.labelColor }"
+                        class="rounded-full px-3 py-1.5 text-xs">
+                        {{ card.label }}
                     </button>
                 </div>
-                <div class="text-sm text-gray-400 line-clamp-2 h-10">
+                <div class="text-gray-400 line-clamp-2 h-10">
                     {{ card.description }}
                 </div>
                 <div class="grid grid-cols-2 border-t">
@@ -46,7 +55,7 @@
                         <div>
                             <fa-icon [icon]="faListCheck"></fa-icon>
                         </div>
-                        <div class="text-sm">
+                        <div class="">
                             {{ card.progress }}
                         </div>
                     </div>
@@ -65,9 +74,9 @@
 
         </div>
 
+
+
+
     </div>
     }
 </div>
-
-
-

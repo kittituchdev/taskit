@@ -1,48 +1,51 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEllipsisVertical, faListCheck } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faListCheck, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+import { UtilService } from '../../shared/services/util.service';
 @Component({
   selector: 'app-kanban',
   standalone: true,
   imports: [
+    CommonModule,
     DragDropModule,
     CdkDrag,
     CdkDropList,
-    FontAwesomeModule,
+    FontAwesomeModule
   ],
   templateUrl: './kanban.component.html',
   styleUrl: './kanban.component.css'
 })
-export class KanbanComponent {
+export class KanbanComponent implements OnInit {
 
+  @Input() lanes: any[] = [];
+  @Input() cards: any[] = [];
 
   faEllipsisVertical = faEllipsisVertical;
   faListCheck = faListCheck;
+  faCircle = faCircle;
 
-  lanes = [
-    { laneId: 'l1', name: 'To Do' },
-    { laneId: 'l2', name: 'In Progress' },
-    { laneId: 'l3', name: 'Done' }
-  ];
+  connectedLanes: any[] = [];
 
-  cards: any = {
-    l1: [
-      { cardId: 1, name: 'Task 1', description: 'Description for Task 1', progress: '1/4' },
-      { cardId: 2, name: 'Task 2', description: 'Description for Task 2', progress: '2/5' }
-    ],
-    l2: [
-      { cardId: 3, name: 'Task 3', description: 'Description for Task 3', progress: '3/4' }
-    ],
-    l3: [
-      { cardId: 4, name: 'Task 4', description: 'Description for Task 4', progress: '4/4' }
-    ]
-  };
+  isDraggable = true;
 
-  connectedLanes = this.lanes.map(lane => lane.laneId);
+  constructor(
+    protected utilService: UtilService
+  ) { }
 
-  constructor() { }
+  ngOnInit(): void {
+    this.connectedLanes = this.lanes.map(lane => lane.laneId);
+  }
 
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize() {
+    this.isDraggable = window.innerWidth >= 1280; // Tailwind md breakpoint (768px)
+  }
 
   dropCard(event: CdkDragDrop<any[]>, laneId?: string): void {
     // Check if dragging within the same container
