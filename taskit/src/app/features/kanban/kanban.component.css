@@ -1,25 +1,51 @@
 .h-kanban {
   /* 14rem from header + project head */
-  height: calc(100vh - 14rem);
+  height: calc(100vh - 11rem);
+  min-height: calc(100vh - 11rem);
 }
 
-.scroll-container {
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    cursor: grab;
-    width: 100%;
-  }
-  
-  .scroll-container:active {
-    cursor: grabbing;
-  }
-  
-  .scroll-item {
-    display: inline-block;
-    min-width: 250px;
-    padding: 20px;
-    background-color: lightgray;
-    margin-right: 10px;
-    text-align: center;
-  }
+/* width */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-neutral-100;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-400 rounded-md;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-500;
+}
+
+.main-board {
+  @apply w-full space-x-4 h-kanban flex flex-row overflow-hidden px-6 pt-6;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.3;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-box:last-child {
+  border: none;
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

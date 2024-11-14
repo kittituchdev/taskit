@@ -1,30 +1,35 @@
-<!-- Col -->
-<div class="flex space-x-6 p-6 overflow-y-auto h-kanban">
-    <!-- Task -->
+<div cdkDropList cdkDropListOrientation="horizontal" class="main-board" (cdkDropListDropped)="dropLane($event)">
     @for (lane of lanes; track lane.laneId) {
-    <div class="min-w-72 md:min-w-96 md:w-96 space-y-4">
+    <div class="min-w-72 md:min-w-80 md:w-80 space-y-4 h-full" cdkDrag>
+
         <div class="w-full flex justify-between items-center px-2 h-8">
             <div class="font-bold">
                 {{ lane.name }}
             </div>
-            <button class="w-8 aspect-square rounded-full hover:bg-neutral-200">
+            <button class="w-8 aspect-square rounded-md hover:bg-neutral-200">
                 <fa-icon [icon]="faEllipsisVertical"></fa-icon>
             </button>
         </div>
 
-        <div class="space-y-2">
-            <button
-                class="bg-white text-blue-600 p-2 rounded-md border flex justify-center items-center min-h-12 w-full">
-                + Add new task
-            </button>
+        <button class="bg-white text-blue-600 p-2 rounded-md border flex justify-center items-center min-h-12 w-full">
+            + Add New Task
+        </button>
 
-            <!-- Card 1 -->
-            <div class="bg-white px-4 pt-4 rounded-md border w-full space-y-2">
-                <div class="flex w-full justify-between items-start space-x-2">
-                    <div class="font-bold line-clamp-2">
-                        Example card name Example card name Example card nameExample card name
+
+        <div cdkDropList [id]="lane.laneId" [cdkDropListData]="cards[lane.laneId]"
+            [cdkDropListConnectedTo]="connectedLanes" (cdkDropListDropped)="dropCard($event)"
+            class="space-y-2 h-full overflow-y-auto pb-36">
+
+            @for (card of cards[lane.laneId]; track card.cardId) {
+
+
+            <!-- Actual Card -->
+            <div class="bg-white px-4 pt-4 rounded-md border w-full space-y-2" cdkDrag>
+                <div class="flex w-full justify-between items-start space-x-2 h-8">
+                    <div class="font-bold whitespace-nowrap truncate">
+                        {{ card.name }}
                     </div>
-                    <button class="w-8 aspect-square rounded-full">
+                    <button class="w-8 aspect-square rounded-md hover:bg-neutral-200">
                         <fa-icon [icon]="faEllipsisVertical"></fa-icon>
                     </button>
                 </div>
@@ -33,11 +38,8 @@
                         UX Stages
                     </button>
                 </div>
-                <div class="text-sm text-gray-400 line-clamp-3 min-h-16">
-                    a spoken or written representation or account of a person, object, or event.
-                    a spoken or written representation or account of a person, object, or event.
-                    a spoken or written representation or account of a person, object, or event.
-
+                <div class="text-sm text-gray-400 line-clamp-2 h-10">
+                    {{ card.description }}
                 </div>
                 <div class="grid grid-cols-2 border-t">
                     <div class="flex items-center space-x-2">
@@ -45,7 +47,7 @@
                             <fa-icon [icon]="faListCheck"></fa-icon>
                         </div>
                         <div class="text-sm">
-                            {{ 1 }}/{{ 4 }}
+                            {{ card.progress }}
                         </div>
                     </div>
                     <div class="flex justify-end items-center py-3">
@@ -59,52 +61,13 @@
 
             </div>
 
-            <!-- Card 2 -->
-            <div class="bg-white px-4 pt-4 rounded-md border w-full space-y-2">
-                <div class="flex w-full justify-between items-start space-x-2">
-                    <div class="font-bold line-clamp-2">
-                        Example card name Example card name Example card nameExample card name
-                    </div>
-                    <button class="w-8 aspect-square rounded-full">
-                        <fa-icon [icon]="faEllipsisVertical"></fa-icon>
-                    </button>
-                </div>
-                <div>
-                    <button class="text-sm rounded-full bg-purple-200 text-purple-600 px-4 py-2">
-                        Develop
-                    </button>
-                </div>
-                <div class="text-sm text-gray-400 line-clamp-3 min-h-16">
-                    a spoken or written representation or account of a person, object, or event.
-                    a spoken or written representation or account of a person, object, or event.
-                    a spoken or written representation or account of a person, object, or event.
-
-                </div>
-                <div class="grid grid-cols-2 border-t">
-                    <div class="flex items-center space-x-2">
-                        <div>
-                            <fa-icon [icon]="faListCheck"></fa-icon>
-                        </div>
-                        <div class="text-sm">
-                            {{ 1 }}/{{ 4 }}
-                        </div>
-                    </div>
-                    <div class="flex justify-end items-center py-3">
-                        <div class="flex space-x-1">
-                            <div class="h-8 w-8 aspect-square rounded-full bg-gray-400">
-
-                            </div>
-                            <div class="h-8 w-8 aspect-square rounded-full bg-gray-600">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            }
 
         </div>
+
     </div>
     }
-
 </div>
+
+
+
