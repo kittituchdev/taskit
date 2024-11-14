@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEllipsisVertical, faListCheck } from '@fortawesome/free-solid-svg-icons';
-import { CdkDrag, CdkDragDrop, CdkDragPlaceholder, CdkDragPreview, CdkDropList, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-kanban',
   standalone: true,
@@ -9,8 +9,6 @@ import { CdkDrag, CdkDragDrop, CdkDragPlaceholder, CdkDragPreview, CdkDropList, 
     DragDropModule,
     CdkDrag,
     CdkDropList,
-    CdkDragPlaceholder,
-    CdkDragPreview,
     FontAwesomeModule,
   ],
   templateUrl: './kanban.component.html',
