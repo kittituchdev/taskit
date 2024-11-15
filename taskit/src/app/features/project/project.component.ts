@@ -1,16 +1,25 @@
 import { Component } from '@angular/core';
 import { KanbanComponent } from '../kanban/kanban.component';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faChartSimple, faFilter } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-project',
   standalone: true,
   imports: [
-    KanbanComponent
+    KanbanComponent,
+    FontAwesomeModule
   ],
   templateUrl: './project.component.html',
   styleUrl: './project.component.css'
 })
 export class ProjectComponent {
+
+  faChartSimple = faChartSimple;
+  faFilter = faFilter;
+
+  project = {
+    name: 'Next Gen CRM'
+  }
 
   lanes = [
     { laneId: 'l1', name: 'Backlog', color: '#dcdde1' },

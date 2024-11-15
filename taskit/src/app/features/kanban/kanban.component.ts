@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEllipsisVertical, faListCheck, faCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faListCheck, faCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { UtilService } from '../../shared/services/util.service';
@@ -25,6 +25,7 @@ export class KanbanComponent implements OnInit {
   faEllipsisVertical = faEllipsisVertical;
   faListCheck = faListCheck;
   faCircle = faCircle;
+  faPlus = faPlus;
 
   connectedLanes: any[] = [];
 
@@ -67,6 +68,14 @@ export class KanbanComponent implements OnInit {
     if (event.previousIndex !== event.currentIndex) {
       moveItemInArray(this.lanes, event.previousIndex, event.currentIndex);
     }
+  }
+
+  openCardDetail(cardId: string) {
+
+  }
+
+  openCardOption(cardId: string) {
+
   }
 
 }

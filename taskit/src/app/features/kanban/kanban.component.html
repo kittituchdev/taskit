@@ -10,16 +10,15 @@
                     {{ lane.name }}
                 </div>
             </div>
-            <button class="w-8 aspect-square rounded-md hover:bg-neutral-200">
-                <fa-icon [icon]="faEllipsisVertical"></fa-icon>
-            </button>
-        </div>
+            <div class="flex items-center">
+                <button class="w-8 aspect-square rounded-md hover:bg-neutral-200">
+                    <fa-icon [icon]="faPlus"></fa-icon>
+                </button>
+                <button class="w-8 aspect-square rounded-md hover:bg-neutral-200">
+                    <fa-icon [icon]="faEllipsisVertical"></fa-icon>
+                </button>
+            </div>
 
-        <div class="pr-1">
-            <button
-                class="bg-white text-blue-600 p-2 rounded-md border flex justify-center items-center min-h-12 w-full">
-                + Add New Task
-            </button>
         </div>
 
 
@@ -31,12 +30,12 @@
 
 
             <!-- Actual Card -->
-            <div class="bg-white px-4 pt-4 rounded-md border w-full space-y-2" cdkDrag>
+            <div class="bg-white px-4 pt-4 rounded-md border w-full space-y-2 hover:cursor-pointer" cdkDrag (click)="openCardDetail(card.cardId)">
                 <div class="flex w-full justify-between items-center space-x-2 h-7">
                     <div class="font-bold whitespace-nowrap truncate">
                         {{ card.name }}
                     </div>
-                    <button class="w-8 aspect-square rounded-md hover:bg-neutral-200">
+                    <button class="w-8 aspect-square rounded-md hover:bg-neutral-200 z-30" (click)="openCardOption(card.cardId); $event.stopPropagation()">
                         <fa-icon [icon]="faEllipsisVertical"></fa-icon>
                     </button>
                 </div>
