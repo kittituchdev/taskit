@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -6,6 +7,20 @@ import { Injectable } from '@angular/core';
 export class NavbarService {
 
   private open = true;
+
+  projects: any[] = [
+    {
+      projectId: 'p1',
+      name: 'Next Gen CRM',
+      path: '/project/'
+    },
+    {
+      projectId: 'p2',
+      name: 'WMS System',
+      path: ''
+    },
+  ];
+
 
   constructor() { }
 

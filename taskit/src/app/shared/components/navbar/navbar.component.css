@@ -1,6 +1,13 @@
 .menu-button {
-    @apply h-12 w-full p-2 border rounded-md shadow-sm flex items-center text-sm hover:bg-neutral-50;
+    @apply h-12 w-full px-4 py-2 border rounded-md flex items-center space-x-2 hover:bg-neutral-100;
 }
+.menu-button-active {
+    @apply bg-sky-500 text-white font-bold hover:bg-sky-500;
+}
+
+/* .menu-button-user {
+    @apply h-14 w-full px-4 py-2 border rounded-md flex items-center space-x-2;
+} */
 
 /* width */
 ::-webkit-scrollbar {

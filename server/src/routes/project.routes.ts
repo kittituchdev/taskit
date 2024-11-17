@@ -5,14 +5,14 @@ import { authenticateJWT } from '../middlewares/auth.middleware';
 const router: Router = Router();
 
 // Create a new project
-router.post('/projects', authenticateJWT, ProjectController.createProject);
+router.post('/projects', ProjectController.createProject);
 // Get all projects
-router.get('/projects', authenticateJWT, ProjectController.getProjects);
+router.get('/projects', ProjectController.getProjects);
 // Get a project, lanes and cards
-router.get('/projects/:project_id', authenticateJWT, ProjectController.getProjectByProjectId);
+router.get('/projects/:project_id', ProjectController.getProjectByProjectId);
 // Update project detail ex. project name, favorite
-router.patch('/projects/:project_id', authenticateJWT, ProjectController.updateProject);
+router.patch('/projects/:project_id', ProjectController.updateProject);
 // Update project active status
-router.patch('/projects/:project_id/active', authenticateJWT, ProjectController.updateProjectActive);
+router.patch('/projects/:project_id/active', ProjectController.updateProjectActive);
 
 export default router;

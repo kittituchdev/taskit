@@ -1,7 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { KanbanComponent } from '../kanban/kanban.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChartSimple, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { ApiService } from '../../core/services/api.service';
+
+interface ILane {
+  laneId: string,
+  name: string,
+  color: string
+}
+
 @Component({
   selector: 'app-project',
   standalone: true,
@@ -12,16 +20,21 @@ import { faChartSimple, faFilter } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './project.component.html',
   styleUrl: './project.component.css'
 })
-export class ProjectComponent {
+export class ProjectComponent implements OnInit {
 
   faChartSimple = faChartSimple;
   faFilter = faFilter;
 
+  isLoading = true;
+  errorMessage = '';
+
   project = {
-    name: 'Next Gen CRM'
+    projectId: '34d03524-88c1-4520-8d45-75883871d77b',
+    name: 'Task Management System'
   }
 
-  lanes = [
+
+  lanes: ILane[] = [
     { laneId: 'l1', name: 'Backlog', color: '#dcdde1' },
     { laneId: 'l2', name: 'To Do', color: '#f4d03f' },
     { laneId: 'l3', name: 'In Progress', color: '#5dade2' },
@@ -33,15 +46,15 @@ export class ProjectComponent {
 
   cards: any = {
     l1: [
-      { cardId: 1, name: 'Feature Request Analysis', description: 'Analyze new feature requests', progress: '0/1', label: 'Research', labelColor: '#c39bd3', textColor: '#5b2c6f' },
-      { cardId: 2, name: 'Tech Debt Assessment', description: 'Identify areas of technical debt', progress: '0/1', label: 'Maintenance', labelColor: '#aab7b8', textColor: '#34495e' },
-      { cardId: 3, name: 'Gather Requirements for Project X', description: 'Interview stakeholders', progress: '0/1', label: 'Planning', labelColor: '#f5b7b1', textColor: '#943126' }
+      { cardId: 1, name: 'Feature Request Analysis', description: 'Analyze new feature requests', progress: '0/1' },
+      { cardId: 2, name: 'Tech Debt Assessment', description: 'Identify areas of technical debt', progress: '0/1' },
+      { cardId: 3, name: 'Gather Requirements for Project X', description: 'Interview stakeholders', progress: '0/1' }
     ],
     l2: [
       { cardId: 4, name: 'Implement Login API', description: 'Develop login API with JWT authentication', progress: '0/1', label: 'Backend', labelColor: '#aed6f1', textColor: '#21618c' },
-      { cardId: 5, name: 'Design Landing Page', description: 'Create wireframes for landing page', progress: '0/1', label: 'UI/UX', labelColor: '#c39bd3', textColor: '#5b2c6f' },
+      { cardId: 5, name: 'Design Landing Page', description: 'Create wireframes for landing page', progress: '0/1' },
       { cardId: 6, name: 'Setup Database Schema', description: 'Design tables for user data', progress: '0/1', label: 'Database', labelColor: '#d7bde2', textColor: '#6c3483' },
-      { cardId: 7, name: 'Define User Roles', description: 'Define permissions for each role', progress: '0/1', label: 'Security', labelColor: '#f8c471', textColor: '#9c640c' }
+      // { cardId: 7, name: 'Define User Roles', description: 'Define permissions for each role', progress: '0/1' }
     ],
     l3: [
       { cardId: 8, name: 'Build UI for User Dashboard', description: 'Create components for the user dashboard', progress: '1/4', label: 'Frontend', labelColor: '#f9e79f', textColor: '#b9770e' },
@@ -70,5 +83,45 @@ export class ProjectComponent {
   };
 
 
+  constructor(
+    private apiService: ApiService
+  ) { }
+
+  ngOnInit(): void {
+    this.fetchLanes();
+  }
+
+  fetchLanes() {
+    this.apiService.getLanes(this.project.projectId).subscribe({
+      next: (result) => {
+        if (result.status?.toLowerCase() === 'success') {
+          this.lanes = this.formatLaneData(result.data);
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error fetching projects:', error);
+        this.errorMessage = 'Failed to load projects. Please try again later.';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  formatLaneData(laneResult: [] = []): ILane[] {
+    let result: ILane[] = [];
+    if (Array.isArray(laneResult)) {
+      result = laneResult.map(lane => {
+        return {
+          laneId: lane['lane_id'],
+          name: lane['name'],
+          color: lane['color'] ?? '#0ea5e9'
+        } as ILane;
+      });
+      return result;
+    } else {
+      console.error('Lane result invalid format', laneResult)
+      return result;
+    }
+  }
 
 }

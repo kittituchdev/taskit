@@ -12,3 +12,7 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   @apply font-sans bg-neutral-100 text-neutral-900;
 }
+
+.input-page {
+  @apply text-sm px-4 py-2 rounded-md bg-neutral-100 w-60;
+}

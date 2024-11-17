@@ -3,11 +3,11 @@
         <button class="menu-button h-11 w-11" (click)="navbarService.toggle()">
             <fa-icon [icon]="faBars"></fa-icon>
         </button>
-        <div class="font-bold">
-            TASKIT
+        <div>
+            <input class="input-page" type="text" placeholder="Search">
         </div>
     </div>
-    <div class="flex items-center">
+    <div class="hidden md:flex items-center">
         <div class="flex items-center space-x-4">
             <div class="text-right">
                 <div>
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <img class="h-11 w-11 aspect-square rounded-full" src="https://i.ibb.co/8mMNjw4/profile-tmp.png"
-                alt="profile-tmp" border="0" />
+                alt="profile-tmp" />
         </div>
     </div>
 </div>

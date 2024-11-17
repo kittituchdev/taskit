@@ -1,7 +1,10 @@
 <div cdkDropList cdkDropListOrientation="horizontal" class="main-board text-sm" (cdkDropListDropped)="dropLane($event)">
-    @for (lane of lanes; track lane.laneId) {
+
+    @if (lanes.length > 0) {
+
+    @for (lane of lanes; track $index) {
     <div class="min-w-80 md:min-w-80 md:w-80 space-y-2 h-full" cdkDrag [cdkDragDisabled]="!isDraggable">
-        <div class="w-full flex justify-between items-center h-8 pr-1">
+        <div class="w-full flex justify-between items-center h-10 pr-1">
             <div class="w-full flex items-center space-x-2 hover:cursor-pointer" cdkDragHandle>
                 <div [ngStyle]="{ color: lane.color }" class="text-xs">
                     <fa-icon [icon]="faCircle"></fa-icon>
@@ -21,31 +24,36 @@
 
         </div>
 
+        @if(cards[lane.laneId] && cards[lane.laneId].length > 0) {
 
         <div cdkDropList [id]="lane.laneId" [cdkDropListData]="cards[lane.laneId]"
             [cdkDropListConnectedTo]="connectedLanes" (cdkDropListDropped)="dropCard($event)"
             class="space-y-2 h-lane overflow-auto pr-1">
 
-            @for (card of cards[lane.laneId]; track card.cardId) {
+            @for (card of cards[lane.laneId]; track $index) {
 
 
             <!-- Actual Card -->
-            <div class="bg-white px-4 pt-4 rounded-md border w-full space-y-2 hover:cursor-pointer" cdkDrag (click)="openCardDetail(card.cardId)">
+            <div class="bg-white px-4 pt-4 rounded-md border w-full space-y-2 hover:cursor-pointer" cdkDrag
+                (click)="openCardDetail(card.cardId)">
                 <div class="flex w-full justify-between items-center space-x-2 h-7">
                     <div class="font-bold whitespace-nowrap truncate">
                         {{ card.name }}
                     </div>
-                    <button class="w-8 aspect-square rounded-md hover:bg-neutral-200 z-30" (click)="openCardOption(card.cardId); $event.stopPropagation()">
+                    <button class="w-8 aspect-square rounded-md hover:bg-neutral-100"
+                        (click)="openCardOption(card.cardId); $event.stopPropagation()">
                         <fa-icon [icon]="faEllipsisVertical"></fa-icon>
                     </button>
                 </div>
+                @if(card.label) {
                 <div>
                     <button
-                        [ngStyle]="{ color: utilService.darkenColor(card.labelColor, 40), background: card.labelColor }"
+                        [ngStyle]="{ color: utilService.lightenColor(card.labelColor, 100), background: utilService.darkenColor(card.labelColor, 40) }"
                         class="rounded-full px-3 py-1.5 text-xs">
                         {{ card.label }}
                     </button>
                 </div>
+                }
                 <div class="text-gray-400 line-clamp-2 h-10">
                     {{ card.description }}
                 </div>
@@ -73,9 +81,24 @@
 
         </div>
 
-
-
+        }
 
     </div>
     }
+
+    }
+
+
+
+    <div class="min-w-80 md:min-w-80 md:w-80 space-y-2  h-full">
+        <div class="w-full flex justify-between items-center pr-1">
+            <button class="w-full flex items-center justify-center h-10 space-x-2 rounded-md hover:bg-neutral-200">
+                <fa-icon [icon]="faPlus"></fa-icon>
+                <div class="font-bold">
+                    New Lane
+                </div>
+            </button>
+        </div>
+    </div>
+
 </div>

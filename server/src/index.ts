@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import cors from 'cors';
 
 import userRoutes from './routes/user.routes';
 import projectRoutes from './routes/project.routes';
@@ -14,6 +15,7 @@ dotenv.config();
 
 const app: Application = express();
 const port: number = parseInt(process.env.PORT || '5000');
+
 
 const swaggerDefinition = {
     openapi: '3.0.0',
@@ -35,6 +37,7 @@ const swaggerSpec = swaggerJsdoc(options);
 
 // Middleware
 app.use(express.json());
+app.use(cors());
 
 // Database Connection
 const connectDB = async () => {

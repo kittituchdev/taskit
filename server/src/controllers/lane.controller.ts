@@ -1,9 +1,37 @@
 import { Request, Response } from 'express';
-import Lane from '../models/lane.model';
+import Lane, { ILane } from '../models/lane.model';
 import { uuid } from '../utils/uuid.utils';
 import projectService from '../services/project.service';
 
+
 class LaneController {
+
+  public async getLanes(req: Request, res: Response): Promise<any> {
+    try {
+      const userId = req.user?.user_id || 'system';
+      const projectId = req.params?.project_id;
+
+
+      const projectExists = await projectService.checkProjectExists(projectId);
+      if (!projectExists) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Project not found'
+        });
+      }
+
+      const lanes = await Lane.find({ project_id: projectId });
+      return res.status(200).json({
+        status: 'success',
+        data: lanes
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Error creating lane'
+      });
+    }
+  }
 
   // Create a new lane
   public async createLane(req: Request, res: Response): Promise<any> {

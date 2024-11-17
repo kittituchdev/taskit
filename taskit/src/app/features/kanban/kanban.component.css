@@ -5,7 +5,7 @@
 }
 
 .h-lane {
-  height: calc(100% - 2rem);
+  height: calc(100% - 2.5rem);
 }
 
 /* width */
@@ -30,13 +30,14 @@
 }
 
 .main-board {
-  @apply w-full space-x-6 h-kanban flex flex-row overflow-y-hidden px-6 p-4;
+  @apply w-full space-x-4 h-kanban flex flex-row overflow-y-hidden px-6 p-4;
 }
 
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
   overflow: hidden; /* Prevents scrollbar from showing in most browsers */
+  @apply text-sm;
 }
 
 .cdk-drag-placeholder {

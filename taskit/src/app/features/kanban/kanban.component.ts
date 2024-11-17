@@ -33,7 +33,9 @@ export class KanbanComponent implements OnInit {
 
   constructor(
     protected utilService: UtilService
-  ) { }
+  ) {
+    this.checkScreenSize();
+  }
 
   ngOnInit(): void {
     this.connectedLanes = this.lanes.map(lane => lane.laneId);
