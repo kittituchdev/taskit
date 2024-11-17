@@ -39,6 +39,7 @@ export class KanbanComponent implements OnInit {
 
   ngOnInit(): void {
     this.connectedLanes = this.lanes.map(lane => lane.laneId);
+    this.fetchCards();
   }
 
   @HostListener('window:resize')
@@ -78,6 +79,10 @@ export class KanbanComponent implements OnInit {
 
   openCardOption(cardId: string) {
 
+  }
+
+  fetchCards() {
+    
   }
 
 }

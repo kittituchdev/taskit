@@ -41,6 +41,10 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/projects`);
   }
 
+  getProject(projectId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/projects/${projectId}`);
+  }
+
   getLanes(projectId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/projects/${projectId}/lanes`);
   }

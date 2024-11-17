@@ -3,17 +3,24 @@ import { KanbanComponent } from '../kanban/kanban.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChartSimple, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from '../../core/services/api.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 interface ILane {
   laneId: string,
   name: string,
-  color: string
+  color?: string
 }
 
+interface IProject {
+  projectId: string,
+  name: string
+}
 @Component({
   selector: 'app-project',
   standalone: true,
   imports: [
+    CommonModule,
     KanbanComponent,
     FontAwesomeModule
   ],
@@ -25,14 +32,15 @@ export class ProjectComponent implements OnInit {
   faChartSimple = faChartSimple;
   faFilter = faFilter;
 
-  isLoading = true;
+  isLaneLoading = true;
+  isProjectLoading = true;
+
   errorMessage = '';
 
-  project = {
-    projectId: '34d03524-88c1-4520-8d45-75883871d77b',
-    name: 'Task Management System'
+  project: IProject = {
+    projectId: '',
+    name: ''
   }
-
 
   lanes: ILane[] = [
     { laneId: 'l1', name: 'Backlog', color: '#dcdde1' },
@@ -84,27 +92,60 @@ export class ProjectComponent implements OnInit {
 
 
   constructor(
-    private apiService: ApiService
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.fetchLanes();
+
+    // Listen to route parameters to get the projectId
+    this.route.paramMap.subscribe((params) => {
+      const projectId = params.get('projectId'); // Get the 'id' from the route parameter
+      this.lanes = [];
+      if (projectId) {
+        this.project.projectId = projectId;
+        this.fetchProject();
+        this.fetchLanes();
+      }
+    });
   }
 
   fetchLanes() {
+    this.isLaneLoading = true;
     this.apiService.getLanes(this.project.projectId).subscribe({
       next: (result) => {
         if (result.status?.toLowerCase() === 'success') {
           this.lanes = this.formatLaneData(result.data);
         }
-        this.isLoading = false;
+        this.isLaneLoading = false;
       },
       error: (error) => {
         console.error('Error fetching projects:', error);
         this.errorMessage = 'Failed to load projects. Please try again later.';
-        this.isLoading = false;
+        this.isLaneLoading = false;
       }
     });
+  }
+
+  fetchProject() {
+    this.isProjectLoading = true;
+    this.apiService.getProject(this.project.projectId).subscribe({
+      next: (result) => {
+        if (result.status?.toLowerCase() === 'success') {
+          this.project = this.formatProjectData(result.data);
+        }
+        this.isLaneLoading = false;
+      },
+      error: (error) => {
+        console.error('Error fetching projects:', error);
+        this.errorMessage = 'Failed to load projects. Please try again later.';
+        this.isLaneLoading = false;
+      }
+    });
+
+
+    this.isProjectLoading = false;
   }
 
   formatLaneData(laneResult: [] = []): ILane[] {
@@ -113,14 +154,20 @@ export class ProjectComponent implements OnInit {
       result = laneResult.map(lane => {
         return {
           laneId: lane['lane_id'],
-          name: lane['name'],
-          color: lane['color'] ?? '#0ea5e9'
+          name: lane['name']
         } as ILane;
       });
       return result;
     } else {
       console.error('Lane result invalid format', laneResult)
       return result;
+    }
+  }
+
+  formatProjectData(projectResult: any = {}): IProject {
+    return {
+      projectId: projectResult['project_id'] ?? '',
+      name: projectResult['name'] ?? ''
     }
   }
 

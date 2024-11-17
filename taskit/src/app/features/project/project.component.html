@@ -1,8 +1,8 @@
 <div class="h-full">
 
-    @if (!isLoading) {
 
     <div class="h-16 bg-white px-6 py-2 flex items-center justify-between shadow-sm">
+        @if (!isProjectLoading) {
         <div class="flex items-center space-x-4">
             <div class="font-bold whitespace-nowrap">
                 {{ project.name }}
@@ -35,21 +35,16 @@
                 </div>
             </div>
         </div>
+        }
+
     </div>
 
-    <div class="h-full">
-
+    <div class="h-full"
+        [ngClass]="{'opacity-0 w-0 h-0 overflow-hidden': isLaneLoading, 'opacity-100 transition-opacity duration-500': !isLaneLoading}">
         <app-kanban [lanes]="lanes" [cards]="cards"></app-kanban>
-
     </div>
 
-    } @else {
 
-    <div>
-        Loading ...
-    </div>
-
-    }
 
 
 </div>

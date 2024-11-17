@@ -6,7 +6,7 @@
     <div class="min-w-80 md:min-w-80 md:w-80 space-y-2 h-full" cdkDrag [cdkDragDisabled]="!isDraggable">
         <div class="w-full flex justify-between items-center h-10 pr-1">
             <div class="w-full flex items-center space-x-2 hover:cursor-pointer" cdkDragHandle>
-                <div [ngStyle]="{ color: lane.color }" class="text-xs">
+                <div [ngStyle]="{ color: lane.color }" class="text-xs text-gray-400">
                     <fa-icon [icon]="faCircle"></fa-icon>
                 </div>
                 <div class="font-bold">
@@ -92,7 +92,7 @@
 
     <div class="min-w-80 md:min-w-80 md:w-80 space-y-2  h-full">
         <div class="w-full flex justify-between items-center pr-1">
-            <button class="w-full flex items-center justify-center h-10 space-x-2 rounded-md hover:bg-neutral-200">
+            <button class="w-full flex items-center justify-center h-10 space-x-2 rounded-md bg-white hover:bg-neutral-50">
                 <fa-icon [icon]="faPlus"></fa-icon>
                 <div class="font-bold">
                     New Lane

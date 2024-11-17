@@ -21,14 +21,21 @@ class LaneController {
       }
 
       const lanes = await Lane.find({ project_id: projectId });
-      return res.status(200).json({
-        status: 'success',
-        data: lanes
-      });
+      if (Array.isArray(lanes) && lanes.length === 0) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Lane not found'
+        });
+      } else {
+        return res.status(200).json({
+          status: 'success',
+          data: lanes
+        });
+      }
     } catch (error) {
       return res.status(500).json({
         status: 'error',
-        message: 'Error creating lane'
+        message: 'Error fetching lane'
       });
     }
   }

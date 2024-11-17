@@ -42,10 +42,18 @@ class ProjectController {
   public async getProjects(req: Request, res: Response): Promise<any> {
     try {
       const projects = await Project.find();
-      return res.status(200).json({
-        status: 'success',
-        data: projects
-      });
+      if (!projects) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Project not found'
+        });
+      } else {
+        return res.status(200).json({
+          status: 'success',
+          data: projects
+        });
+      }
+
     } catch (error) {
       return res.status(500).json({
         status: 'error',

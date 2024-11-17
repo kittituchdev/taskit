@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faXmark, faFolder, faEllipsisVertical, faChartPie, faGear, faUser, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { InitService } from '../../services/init.service';
 
 @Component({
   selector: 'app-navbar',
@@ -59,7 +60,7 @@ export class NavbarComponent {
   }
 
   goToProject(project: any): void {
-    this.router.navigate(['/project', project.projectId]);
+    this.router.navigate([project.path]);
   }
 
   isActive(projectId: string): boolean {

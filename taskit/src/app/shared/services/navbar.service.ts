@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+interface IProject {
+  projectId: string,
+  name: string,
+  path: string
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -8,18 +13,7 @@ export class NavbarService {
 
   private open = true;
 
-  projects: any[] = [
-    {
-      projectId: 'p1',
-      name: 'Next Gen CRM',
-      path: '/project/'
-    },
-    {
-      projectId: 'p2',
-      name: 'WMS System',
-      path: ''
-    },
-  ];
+  projects: IProject[] = [];
 
 
   constructor() { }
@@ -34,6 +28,16 @@ export class NavbarService {
 
   setOpen(open: boolean) {
     this.open = open;
+  }
+
+  setProject(projects: any[]) {
+    this.projects = projects.map((project) => {
+      return {
+        projectId: project['project_id'],
+        name: project['name'],
+        path: `/project/${project['project_id']}`
+      } as IProject;
+    });
   }
 
 }
