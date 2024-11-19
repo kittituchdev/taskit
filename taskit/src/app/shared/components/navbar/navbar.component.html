@@ -45,7 +45,8 @@
             </div>
 
             <div class="space-y-1">
-                <button class="menu-button justify-between">
+                <button class="menu-button justify-between"
+                    [ngClass]="{'menu-button-active': activeMenu === 'dashboard'}" (click)="goToDashboard()">
                     <div class="flex items-center space-x-2 w-52">
                         <div>
                             <fa-icon [icon]="faChartPie"></fa-icon>
@@ -55,7 +56,8 @@
                         </div>
                     </div>
                 </button>
-                <button class="menu-button justify-between">
+                <button class="menu-button justify-between"
+                    [ngClass]="{'menu-button-active': activeMenu === 'setting'}">
                     <div class="flex items-center space-x-2 w-52">
                         <div>
                             <fa-icon [icon]="faGear"></fa-icon>

@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { NavbarService } from '../../services/navbar.service';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -16,7 +16,7 @@ import { InitService } from '../../services/init.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
 
   faXmark = faXmark;
   faFolder = faFolder;
@@ -29,6 +29,7 @@ export class NavbarComponent {
   smallScreen = false;
 
   currentProjectId: string | null = null;
+  activeMenu: string | null = null; // Track the active menu
 
   constructor(
     protected navbarService: NavbarService,
@@ -41,8 +42,34 @@ export class NavbarComponent {
         const url = this.router.url;
         const match = url.match(/\/project\/(.+)/);
         this.currentProjectId = match ? match[1] : null;
+        // Set activeMenu based on current URL
+        if (url.includes('dashboard')) {
+          this.activeMenu = 'dashboard';
+        } else if (url.includes('setting')) {
+          this.activeMenu = 'setting';
+        } else {
+          this.activeMenu = null;
+        }
       }
     })
+  }
+
+  ngOnInit(): void {
+    this.initialNavbarActive();
+  }
+
+  initialNavbarActive() {
+    const url = this.router.url;
+    const match = url.match(/\/project\/(.+)/);
+    this.currentProjectId = match ? match[1] : null;
+    // Set activeMenu based on current URL
+    if (url.includes('dashboard')) {
+      this.activeMenu = 'dashboard';
+    } else if (url.includes('setting')) {
+      this.activeMenu = 'setting';
+    } else {
+      this.activeMenu = null;
+    }
   }
 
   @HostListener('window:resize')
@@ -63,7 +90,17 @@ export class NavbarComponent {
     this.router.navigate([project.path]);
   }
 
-  isActive(projectId: string): boolean {
+  goToDashboard() {
+    this.router.navigate(['dashboard']);
+    this.activeMenu = 'dashboard'; // Set active menu to 'dashboard'
+  }
+
+  goToSetting() {
+    this.router.navigate(['setting']);
+    this.activeMenu = 'setting'; // Set active menu to 'setting'
+  }
+
+  isActive(projectId: string | null): boolean {
     return this.currentProjectId === projectId;
   }
 

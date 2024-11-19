@@ -10,6 +10,7 @@ export interface ICard extends Document {
     comments?: IComment[];
     lane_id: string;
     order: number;
+    active: boolean,
     checklist?: IChecklist[];
     created: ILog;
     updated: ILog;
@@ -22,7 +23,8 @@ const CardSchema: Schema = new Schema({
     comment: { type: Array<Object> },
     lane_id: { type: String, require: true },
     order: { type: Number, require: true },
-    checklist: { type: Array<Object> },
+    active: { type: Boolean, default: true },
+    checklist: { type: Array<Object>},
     created: { type: Object, required: true },
     updated: { type: Object, required: true }
 });

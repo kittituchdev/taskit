@@ -1,4 +1,5 @@
-<div cdkDropList cdkDropListOrientation="horizontal" class="main-board text-sm" (cdkDropListDropped)="dropLane($event)">
+<div cdkDropList cdkDropListOrientation="horizontal" class="main-board text-sm"
+    [ngClass]="{'opacity-0': isLoading, 'opacity-100 transition-opacity duration-300': !isLoading}" (cdkDropListDropped)="dropLane($event)">
 
     @if (lanes.length > 0) {
 
@@ -24,7 +25,6 @@
 
         </div>
 
-        @if(cards[lane.laneId] && cards[lane.laneId].length > 0) {
 
         <div cdkDropList [id]="lane.laneId" [cdkDropListData]="cards[lane.laneId]"
             [cdkDropListConnectedTo]="connectedLanes" (cdkDropListDropped)="dropCard($event)"
@@ -38,7 +38,7 @@
                 (click)="openCardDetail(card.cardId)">
                 <div class="flex w-full justify-between items-center space-x-2 h-7">
                     <div class="font-bold whitespace-nowrap truncate">
-                        {{ card.name }}
+                        {{ card.title }}
                     </div>
                     <button class="w-8 aspect-square rounded-md hover:bg-neutral-100"
                         (click)="openCardOption(card.cardId); $event.stopPropagation()">
@@ -81,7 +81,6 @@
 
         </div>
 
-        }
 
     </div>
     }
@@ -92,7 +91,8 @@
 
     <div class="min-w-80 md:min-w-80 md:w-80 space-y-2  h-full">
         <div class="w-full flex justify-between items-center pr-1">
-            <button class="w-full flex items-center justify-center h-10 space-x-2 rounded-md bg-white hover:bg-neutral-50">
+            <button
+                class="w-full flex items-center justify-center h-10 space-x-2 rounded-md bg-white hover:bg-neutral-50">
                 <fa-icon [icon]="faPlus"></fa-icon>
                 <div class="font-bold">
                     New Lane

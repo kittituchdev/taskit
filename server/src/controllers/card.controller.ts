@@ -20,7 +20,7 @@ class CardController {
         });
       }
 
-      const cards = await Card.find({ lane_id: laneId });
+      const cards = await Card.find({ lane_id: laneId, active: true });
       if (Array.isArray(cards) && cards.length === 0) {
         return res.status(404).json({
           status: 'error',
@@ -139,6 +139,39 @@ class CardController {
           message: 'Invalid parameters'
         });
       }
+      const card = await Card.findOneAndUpdate({ card_id: cardId }, updateObject, { new: true });
+      if (!card) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Card not found'
+        });
+      } else {
+        return res.status(200).json({
+          status: 'success',
+          data: card
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Error update card'
+      });
+    }
+  }
+
+  public async deleteCard(req: Request, res: Response): Promise<any> {
+    try {
+      const userId = req.user?.user_id || 'system';
+      const cardId = req.params?.card_id;
+
+      let updateObject: any = {
+        active: false,
+        updated: {
+          by: userId,
+          date: Date.now()
+        }
+      };
+
       const card = await Card.findOneAndUpdate({ card_id: cardId }, updateObject, { new: true });
       if (!card) {
         return res.status(404).json({

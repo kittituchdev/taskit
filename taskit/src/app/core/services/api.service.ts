@@ -49,4 +49,8 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/projects/${projectId}/lanes`);
   }
 
+  getCards(laneId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/lanes/${laneId}/cards`);
+  }
+
 }

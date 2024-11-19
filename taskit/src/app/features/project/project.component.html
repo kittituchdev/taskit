@@ -39,10 +39,16 @@
 
     </div>
 
-    <div class="h-full"
-        [ngClass]="{'opacity-0 w-0 h-0 overflow-hidden': isLaneLoading, 'opacity-100 transition-opacity duration-500': !isLaneLoading}">
+    @if (!isLaneLoading && !isCardLoading) {
+    <div class="h-full">
         <app-kanban [lanes]="lanes" [cards]="cards"></app-kanban>
     </div>
+    } @else {
+        <div class="h-kanban">
+            <app-loader></app-loader>
+        </div>
+    }
+
 
 
 

@@ -10,6 +10,7 @@ router.get('/projects/:project_id/lanes', LaneController.getLanes);
 router.post('/projects/:project_id/lanes', LaneController.createLane);
 // Update lane
 router.patch('/lanes/:lane_id', LaneController.updateLane);
+router.patch('/lanes/:lane_id/archive', LaneController.deleteLane);
 // Update the order of lanes
 router.patch('/projects/:project_id/lanes/order', LaneController.updateLanesOrder);
 

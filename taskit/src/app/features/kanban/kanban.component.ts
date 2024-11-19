@@ -4,6 +4,7 @@ import { faEllipsisVertical, faListCheck, faCircle, faPlus } from '@fortawesome/
 import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { UtilService } from '../../shared/services/util.service';
+import { ApiService } from '../../core/services/api.service';
 @Component({
   selector: 'app-kanban',
   standalone: true,
@@ -31,16 +32,24 @@ export class KanbanComponent implements OnInit {
 
   isDraggable = true;
 
+  isLoading = true;
+
   constructor(
-    protected utilService: UtilService
+    protected utilService: UtilService,
+    private apiService: ApiService
   ) {
     this.checkScreenSize();
   }
 
   ngOnInit(): void {
     this.connectedLanes = this.lanes.map(lane => lane.laneId);
-    this.fetchCards();
+    this.isLoading = true;
+    setTimeout(() => {
+      console.log('set loaded')
+      this.isLoading = false;
+    }, 100)
   }
+
 
   @HostListener('window:resize')
   onResize() {
@@ -79,10 +88,6 @@ export class KanbanComponent implements OnInit {
 
   openCardOption(cardId: string) {
 
-  }
-
-  fetchCards() {
-    
   }
 
 }

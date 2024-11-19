@@ -20,7 +20,7 @@ class LaneController {
         });
       }
 
-      const lanes = await Lane.find({ project_id: projectId });
+      const lanes = await Lane.find({ project_id: projectId, active: true });
       if (Array.isArray(lanes) && lanes.length === 0) {
         return res.status(404).json({
           status: 'error',
@@ -113,6 +113,39 @@ class LaneController {
           message: 'Invalid parameters'
         });
       }
+      const lane = await Lane.findOneAndUpdate({ lane_id: laneId }, updateObject, { new: true });
+      if (!lane) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Lane not found'
+        });
+      } else {
+        return res.status(200).json({
+          status: 'success',
+          data: lane
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Error update lane'
+      });
+    }
+  }
+
+  public async deleteLane(req: Request, res: Response): Promise<any> {
+    try {
+      const userId = req.user?.user_id || 'system';
+      const laneId = req.params?.lane_id;
+
+      let updateObject: any = {
+        active: false,
+        updated: {
+          by: userId,
+          date: Date.now()
+        }
+      };
+
       const lane = await Lane.findOneAndUpdate({ lane_id: laneId }, updateObject, { new: true });
       if (!lane) {
         return res.status(404).json({

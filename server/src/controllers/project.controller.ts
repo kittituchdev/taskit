@@ -41,7 +41,7 @@ class ProjectController {
   // Get all projects
   public async getProjects(req: Request, res: Response): Promise<any> {
     try {
-      const projects = await Project.find();
+      const projects = await Project.find({ active: true });
       if (!projects) {
         return res.status(404).json({
           status: 'error',
