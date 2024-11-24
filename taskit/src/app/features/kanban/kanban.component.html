@@ -1,26 +1,71 @@
 <div cdkDropList cdkDropListOrientation="horizontal" class="main-board text-sm"
-    [ngClass]="{'opacity-0': isLoading, 'opacity-100 transition-opacity duration-300': !isLoading}" (cdkDropListDropped)="dropLane($event)">
+    [ngClass]="{'opacity-0': isLoading, 'opacity-100 transition-opacity duration-300': !isLoading}"
+    (cdkDropListDropped)="dropLane($event)">
 
     @if (lanes.length > 0) {
 
     @for (lane of lanes; track $index) {
     <div class="min-w-80 md:min-w-80 md:w-80 space-y-2 h-full" cdkDrag [cdkDragDisabled]="!isDraggable">
         <div class="w-full flex justify-between items-center h-10 pr-1">
-            <div class="w-full flex items-center space-x-2 hover:cursor-pointer" cdkDragHandle>
+            <div class="w-full flex items-center space-x-2 hover:cursor-pointer" cdkDragHandle
+                (click)="openChangeLaneNameInput(lane.laneId, lane.name)">
                 <div [ngStyle]="{ color: lane.color }" class="text-xs text-gray-400">
                     <fa-icon [icon]="faCircle"></fa-icon>
                 </div>
+                @if (laneNameInput === lane.laneId) {
+                <div (click)="$event.stopPropagation()">
+                    <input #laneName type="text" class="input-page !bg-white !w-56 font-bold"
+                        (blur)="saveLaneName()" (keydown.enter)="saveLaneName()" [formControl]="laneNameChange">
+                </div>
+                } @else {
                 <div class="font-bold">
                     {{ lane.name }}
                 </div>
+                }
             </div>
             <div class="flex items-center">
                 <button class="w-8 aspect-square rounded-md hover:bg-neutral-200">
                     <fa-icon [icon]="faPlus"></fa-icon>
                 </button>
-                <button class="w-8 aspect-square rounded-md hover:bg-neutral-200">
-                    <fa-icon [icon]="faEllipsisVertical"></fa-icon>
+                <button [matMenuTriggerFor]="laneActions" class="w-8 aspect-square rounded-md hover:bg-neutral-200">
+                    <fa-icon [icon]="faEllipsis"></fa-icon>
                 </button>
+                <mat-menu #laneActions="matMenu">
+                    <div class="flex justify-center items-center h-10 px-3 font-bold">
+                        Lane Actions
+                    </div>
+                    <button mat-menu-item>
+                        <div class="font-normal">
+                            Add cards
+                        </div>
+                    </button>
+                    <button mat-menu-item>
+                        <div class="font-normal">
+                            Copy lane
+                        </div>
+                    </button>
+                    <button mat-menu-item>
+                        <div class="font-normal">
+                            Move lane
+                        </div>
+                    </button>
+                    <button mat-menu-item>
+                        <div class="font-normal">
+                            Move all cards in lane
+                        </div>
+                    </button>
+                    <div class="border-b my-2 mx-2"></div>
+                    <button mat-menu-item>
+                        <div class="font-normal">
+                            Archive this lane
+                        </div>
+                    </button>
+                    <button mat-menu-item>
+                        <div class="font-normal">
+                            Archive all cards in this lane
+                        </div>
+                    </button>
+                </mat-menu>
             </div>
 
         </div>
@@ -40,10 +85,36 @@
                     <div class="font-bold whitespace-nowrap truncate">
                         {{ card.title }}
                     </div>
-                    <button class="w-8 aspect-square rounded-md hover:bg-neutral-100"
+                    <button [matMenuTriggerFor]="cardActions" class="w-8 aspect-square rounded-md hover:bg-neutral-100"
                         (click)="openCardOption(card.cardId); $event.stopPropagation()">
-                        <fa-icon [icon]="faEllipsisVertical"></fa-icon>
+                        <fa-icon [icon]="faEllipsis"></fa-icon>
                     </button>
+                    <mat-menu #cardActions="matMenu">
+                        <div class="flex justify-center items-center h-10 px-3 font-bold">
+                            Card Actions
+                        </div>
+                        <button mat-menu-item>
+                            <div class="font-normal">
+                                Edit
+                            </div>
+                        </button>
+                        <button mat-menu-item>
+                            <div class="font-normal">
+                                Add labels
+                            </div>
+                        </button>
+                        <button mat-menu-item>
+                            <div class="font-normal">
+                                Move card
+                            </div>
+                        </button>
+                        <div class="border-b my-2 mx-2"></div>
+                        <button mat-menu-item>
+                            <div class="font-normal">
+                                Archive this card
+                            </div>
+                        </button>
+                    </mat-menu>
                 </div>
                 @if(card.label) {
                 <div>

@@ -53,4 +53,13 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/lanes/${laneId}/cards`);
   }
 
+  updateLane(laneId: string, body: object) {
+    console.log('go to this?>')
+    return this.http.patch(`${this.apiUrl}/lanes/${laneId}`, body, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+
 }

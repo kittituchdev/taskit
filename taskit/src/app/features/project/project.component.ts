@@ -104,7 +104,7 @@ export class ProjectComponent implements OnInit {
           this.isLaneLoading = false;
         },
         error: (error) => {
-          console.error('Error fetching projects:', error);
+          console.error('Error fetching projects:', error.message);
           this.errorMessage = 'Failed to load projects. Please try again later.';
           resolve(cardsResult);
           this.isLaneLoading = false;
@@ -124,8 +124,8 @@ export class ProjectComponent implements OnInit {
           this.isLaneLoading = false;
         },
         error: (error) => {
-          console.error('Error fetching projects:', error);
-          this.errorMessage = 'Failed to load projects. Please try again later.';
+          console.error('Error fetching lanes:', error.message);
+          this.errorMessage = 'Failed to load lanes. Please try again later.';
           reject(error);
           this.isLaneLoading = false;
         }
@@ -142,7 +142,7 @@ export class ProjectComponent implements OnInit {
         this.isLaneLoading = false;
       },
       error: (error) => {
-        console.error('Error fetching projects:', error);
+        console.error('Error fetching projects:', error.message);
         this.errorMessage = 'Failed to load projects. Please try again later.';
         this.isLaneLoading = false;
       }
@@ -190,6 +190,17 @@ export class ProjectComponent implements OnInit {
       console.error('Lane result invalid format', cardsResult)
       return result;
     }
+  }
+
+  public laneChangeCallback = () => {
+    return new Promise((resolve) => {
+      this.fetchLanes().then(() => {
+        resolve(true)
+      }).catch(error => {
+        console.error(error)
+        resolve(false)
+      })
+    })
   }
 
 }

@@ -1,0 +1,11 @@
+::ng-deep .mat-mdc-menu-content {
+  @apply bg-white !w-60;
+}
+
+::ng-deep .mat-mdc-menu-panel {
+  @apply !shadow-sm !rounded-md !border;
+}
+
+::ng-deep .mat-mdc-menu-item {
+  @apply !h-10 !min-h-10;
+}

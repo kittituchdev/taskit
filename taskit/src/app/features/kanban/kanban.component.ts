@@ -1,10 +1,12 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEllipsisVertical, faListCheck, faCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis, faListCheck, faCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { UtilService } from '../../shared/services/util.service';
 import { ApiService } from '../../core/services/api.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 @Component({
   selector: 'app-kanban',
   standalone: true,
@@ -13,7 +15,9 @@ import { ApiService } from '../../core/services/api.service';
     DragDropModule,
     CdkDrag,
     CdkDropList,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatMenuModule,
+    ReactiveFormsModule
   ],
   templateUrl: './kanban.component.html',
   styleUrl: './kanban.component.css'
@@ -22,13 +26,21 @@ export class KanbanComponent implements OnInit {
 
   @Input() lanes: any[] = [];
   @Input() cards: any[] = [];
+  @Input() laneChangeCallback: Function = () => { };
 
-  faEllipsisVertical = faEllipsisVertical;
+  @ViewChild('laneName')
+  laneName!: ElementRef;
+
+  faEllipsis = faEllipsis;
   faListCheck = faListCheck;
   faCircle = faCircle;
   faPlus = faPlus;
 
+
   connectedLanes: any[] = [];
+
+  laneNameInput: string | null = null;
+  laneNameChange = new FormControl('', Validators.required);
 
   isDraggable = true;
 
@@ -87,6 +99,39 @@ export class KanbanComponent implements OnInit {
   }
 
   openCardOption(cardId: string) {
+
+  }
+
+  openChangeLaneNameInput(laneId: string, defaultLaneName?: string) {
+    this.laneNameInput = laneId;
+    setTimeout(() => {
+      this.laneNameChange.setValue(defaultLaneName ?? '')
+      this.laneName.nativeElement.select()
+    });
+  }
+
+  saveLaneName() {
+    if (this.laneNameInput) {
+      if (this.laneNameChange.valid) {
+        const updateObject = {
+          name: this.laneNameChange.value
+        }
+        // call api update lane name
+        this.apiService.updateLane(this.laneNameInput, updateObject).subscribe({
+          next: (result) => {
+            this.laneChangeCallback().then(() => {
+              this.laneNameInput = null;
+            })
+          },
+          error: (error) => {
+            console.log(error)
+            this.laneNameInput = null;
+          }
+        })
+      } else {
+        this.laneNameInput = null;
+      }
+    }
 
   }
 
