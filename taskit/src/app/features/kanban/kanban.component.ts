@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEllipsis, faListCheck, faCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis, faListCheck, faCircle, faPlus, faXmark, faSave } from '@fortawesome/free-solid-svg-icons';
 import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { UtilService } from '../../shared/services/util.service';
@@ -26,21 +26,33 @@ export class KanbanComponent implements OnInit {
 
   @Input() lanes: any[] = [];
   @Input() cards: any[] = [];
-  @Input() laneChangeCallback: Function = () => { };
+  @Input() laneChangeCallback: Function = async () => { };
+  @Input() cardChangeCallback: Function = async () => { };
 
   @ViewChild('laneName')
   laneName!: ElementRef;
+  @ViewChild('newCardName')
+  newCardName!: ElementRef;
 
   faEllipsis = faEllipsis;
   faListCheck = faListCheck;
   faCircle = faCircle;
   faPlus = faPlus;
+  faXmark = faXmark;
+  faSave = faSave;
 
 
   connectedLanes: any[] = [];
 
   laneNameInput: string | null = null;
   laneNameChange = new FormControl('', Validators.required);
+  cardNameChange = new FormControl('');
+
+
+  createCardConfig = {
+    show: false as boolean,
+    laneId: null as string | null
+  };
 
   isDraggable = true;
 
@@ -57,8 +69,8 @@ export class KanbanComponent implements OnInit {
     this.connectedLanes = this.lanes.map(lane => lane.laneId);
     this.isLoading = true;
     setTimeout(() => {
-      console.log('set loaded')
       this.isLoading = false;
+      console.log(this.cards)
     }, 100)
   }
 
@@ -103,11 +115,14 @@ export class KanbanComponent implements OnInit {
   }
 
   openChangeLaneNameInput(laneId: string, defaultLaneName?: string) {
-    this.laneNameInput = laneId;
     setTimeout(() => {
-      this.laneNameChange.setValue(defaultLaneName ?? '')
-      this.laneName.nativeElement.select()
-    });
+      this.laneNameInput = laneId;
+      setTimeout(() => {
+        this.laneNameChange.setValue(defaultLaneName ?? '')
+        this.laneName.nativeElement.select()
+      });
+    }, 50);
+
   }
 
   saveLaneName() {
@@ -118,10 +133,14 @@ export class KanbanComponent implements OnInit {
         }
         // call api update lane name
         this.apiService.updateLane(this.laneNameInput, updateObject).subscribe({
-          next: (result) => {
-            this.laneChangeCallback().then(() => {
+          next: (result: any) => {
+            if (result.status === 'success') {
+              this.laneChangeCallback().then(() => {
+                this.laneNameInput = null;
+              })
+            } else {
               this.laneNameInput = null;
-            })
+            }
           },
           error: (error) => {
             console.log(error)
@@ -133,6 +152,52 @@ export class KanbanComponent implements OnInit {
       }
     }
 
+  }
+
+  setCreateCardConfig(show: boolean, laneId: string) {
+    console.log(laneId)
+    this.createCardConfig = {
+      show,
+      laneId
+    };
+    setTimeout(() => {
+      this.newCardName.nativeElement.focus()
+    }, 50);
+  }
+
+  cancelCreateCard() {
+    this.createCardConfig = {
+      show: false,
+      laneId: null
+    };
+  }
+
+  addNewCard() {
+    if (!this.cardNameChange.value) { // no input data, then close input without create card
+      this.cancelCreateCard();
+    } else {
+      console.log(this.cardNameChange.value);
+      if (this.createCardConfig.laneId) {
+        this.apiService.createCard(this.createCardConfig.laneId, { title: this.cardNameChange.value }).subscribe({
+          next: (result: any) => {
+            if (result.status === 'success') {
+              this.cardChangeCallback(this.createCardConfig.laneId).then(() => {
+                this.cancelCreateCard();
+              })
+              console.log('success')
+            } else {
+              console.log('fail')
+              this.cancelCreateCard();
+            }
+          },
+          error: (error) => {
+            console.log(error)
+            console.log('fail')
+            this.cancelCreateCard();
+          }
+        })
+      }
+    }
   }
 
 }

@@ -14,8 +14,8 @@
                 </div>
                 @if (laneNameInput === lane.laneId) {
                 <div (click)="$event.stopPropagation()">
-                    <input #laneName type="text" class="input-page !bg-white !w-56 font-bold"
-                        (blur)="saveLaneName()" (keydown.enter)="saveLaneName()" [formControl]="laneNameChange">
+                    <input #laneName type="text" class="input-page !bg-white !w-56 font-bold" (blur)="saveLaneName()"
+                        (keydown.enter)="saveLaneName()" [formControl]="laneNameChange">
                 </div>
                 } @else {
                 <div class="font-bold">
@@ -24,7 +24,7 @@
                 }
             </div>
             <div class="flex items-center">
-                <button class="w-8 aspect-square rounded-md hover:bg-neutral-200">
+                <button class="w-8 aspect-square rounded-md hover:bg-neutral-200" (click)="setCreateCardConfig(true, lane.laneId)">
                     <fa-icon [icon]="faPlus"></fa-icon>
                 </button>
                 <button [matMenuTriggerFor]="laneActions" class="w-8 aspect-square rounded-md hover:bg-neutral-200">
@@ -34,7 +34,7 @@
                     <div class="flex justify-center items-center h-10 px-3 font-bold">
                         Lane Actions
                     </div>
-                    <button mat-menu-item>
+                    <button mat-menu-item (click)="setCreateCardConfig(true, lane.laneId)">
                         <div class="font-normal">
                             Add cards
                         </div>
@@ -74,6 +74,14 @@
         <div cdkDropList [id]="lane.laneId" [cdkDropListData]="cards[lane.laneId]"
             [cdkDropListConnectedTo]="connectedLanes" (cdkDropListDropped)="dropCard($event)"
             class="space-y-2 h-lane overflow-auto pr-1">
+
+            @if (createCardConfig.show && createCardConfig.laneId === lane.laneId) {
+            <div class="border p-4 rounded-md bg-white flex justify-between items-center">
+                <input #newCardName class="input-page !w-full" placeholder="Card title" type="text" (blur)="addNewCard()"
+                (keydown.enter)="addNewCard()" [formControl]="cardNameChange">
+            </div>
+            }
+
 
             @for (card of cards[lane.laneId]; track $index) {
 

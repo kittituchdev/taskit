@@ -41,7 +41,7 @@
 
     @if (!isLaneLoading && !isCardLoading) {
     <div class="h-full">
-        <app-kanban [lanes]="lanes" [cards]="cards" [laneChangeCallback]="laneChangeCallback"></app-kanban>
+        <app-kanban [lanes]="lanes" [cards]="cards" [laneChangeCallback]="laneChangeCallback" [cardChangeCallback]="cardChangeCallback"></app-kanban>
     </div>
     } @else {
         <div class="h-kanban">

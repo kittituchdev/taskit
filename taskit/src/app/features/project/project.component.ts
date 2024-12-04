@@ -192,7 +192,7 @@ export class ProjectComponent implements OnInit {
     }
   }
 
-  public laneChangeCallback = () => {
+  public laneChangeCallback = async () => {
     return new Promise((resolve) => {
       this.fetchLanes().then(() => {
         resolve(true)
@@ -200,6 +200,13 @@ export class ProjectComponent implements OnInit {
         console.error(error)
         resolve(false)
       })
+    })
+  }
+
+  public cardChangeCallback = async (laneId: string) => {
+    return new Promise(async (resolve) => {
+      this.cards[laneId] = await this.fetchCards(laneId);
+      resolve(true)
     })
   }
 

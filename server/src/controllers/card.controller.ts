@@ -20,7 +20,7 @@ class CardController {
         });
       }
 
-      const cards = await Card.find({ lane_id: laneId, active: true });
+      const cards = await Card.find({ lane_id: laneId, active: true }, {}, { sort: { _id: -1 } });
       if (Array.isArray(cards) && cards.length === 0) {
         return res.status(404).json({
           status: 'error',

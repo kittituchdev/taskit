@@ -54,12 +54,21 @@ export class ApiService {
   }
 
   updateLane(laneId: string, body: object) {
-    console.log('go to this?>')
     return this.http.patch(`${this.apiUrl}/lanes/${laneId}`, body, {
       headers: {
         'Content-Type': 'application/json'
       }
     });
   }
+
+  createCard(laneId: string, body: object) {
+    return this.http.post(`${this.apiUrl}/lanes/${laneId}/cards`, body, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+
+
 
 }

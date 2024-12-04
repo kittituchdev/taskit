@@ -14,5 +14,5 @@ body {
 }
 
 .input-page {
-  @apply text-sm px-4 py-2 rounded-md bg-neutral-100 w-60;
+  @apply text-sm px-4 py-2 rounded-md bg-neutral-100 w-60 min-h-10;
 }
